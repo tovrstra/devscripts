@@ -13,8 +13,11 @@ class Program(object):
     def __init__(self, colwidth=15):
         self.colwidth = colwidth
         self.active = False
-        with open('HEADER') as f:
-            self.header_lines = f.readlines()
+        if os.path.isfile('HEADER'):
+            with open('HEADER') as f:
+                self.header_lines = f.readlines()
+        else:
+            self.header_lines = None
 
     def main(self):
         self.remove_from_gitignore()
@@ -133,6 +136,9 @@ class Program(object):
 
     def fix_python_lines(self, lines):
         """HEADER PYTHON"""
+        if self.header_lines is None:
+            return
+        # check for an exception line
         for line in lines:
             if 'nofixheader' in line:
                 return
@@ -150,6 +156,8 @@ class Program(object):
 
     def fix_c_lines(self, lines):
         """HEADER C"""
+        if self.header_lines is None:
+            return
         # check for an exception line
         for line in lines:
             if 'no_update_headers' in line:
@@ -162,6 +170,8 @@ class Program(object):
 
     def fix_rst_lines(self, lines):
         """HEADER RST"""
+        if self.header_lines is None:
+            return
         # check for an exception line
         for line in lines:
             if 'no_update_headers' in line:
