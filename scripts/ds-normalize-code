@@ -145,11 +145,9 @@ class Program(object):
             if 'nofixheader' in line:
                 return
         # check if a shebang is present
-        if len(lines) > 0:
-            do_shebang = lines[0].startswith('#!')
+        do_shebang = len(lines) > 0 and lines[0].startswith('#!')
+        if do_shebang:
             del lines[0]
-        else:
-            do_shebang = False
         # remove the current header
         self.strip_header(lines, ['# --\n', '#--\n'])
         # add new header (insert must be in reverse order)
